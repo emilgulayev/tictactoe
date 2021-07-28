@@ -6,7 +6,7 @@ import './SignUp.sass'
 function SignUp() {
 
     const [userEmail,setUserEmail]= useState("")
-    const [isLogging,setIsLogging]=useState(true)
+    const [isLogging,setIsLogging]=useState(false)
     const [color, setColor] = useState("#ffffff")
 
     const override = css`
@@ -21,7 +21,7 @@ function SignUp() {
     }
 
     function onLogin(){
-
+        setIsLogging(true);
     }
     return (
         <div className="SignUp">
@@ -30,8 +30,8 @@ function SignUp() {
             <div className="SignUp-container">
                 <div>
                     <span>Email:</span>
-                    <input type="text"  placeholder="Email" aria-label="Email" onChange={e=>userChangeEmail(e)} />
-                    <button type="button" className="btn btn-primary">Login</button>
+                    <input type="text"  placeholder="Email" aria-label="Email" onChange={e=>userChangeEmail(e)}/>
+                    <button type="button" className="btn btn-primary" onClick={onLogin} disabled={isLogging}>Login</button>
                 </div>
 
             </div>
