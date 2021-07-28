@@ -1,17 +1,32 @@
 import React,{useState} from 'react'
+import ClipLoader from "react-spinners/ClipLoader"
+import { css } from "@emotion/react"
 import './SignUp.sass'
 
 function SignUp() {
 
     const [userEmail,setUserEmail]= useState("")
+    const [isLogging,setIsLogging]=useState(true)
+    const [color, setColor] = useState("#ffffff")
+
+    const override = css`
+      display: block;
+      margin: 0 auto;
+      border-color: red;
+    `
 
     function userChangeEmail(e){
         console.log("changed value to:",e.target.value)
         setUserEmail(e.target.value)
     }
+
+    function onLogin(){
+
+    }
     return (
         <div className="SignUp">
             <h1>Sign Up</h1>
+            <ClipLoader color={color} loading={isLogging} css={override} size={100} />
             <div className="SignUp-container">
                 <div>
                     <span>Email:</span>
