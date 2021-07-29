@@ -37,7 +37,7 @@ function SignUp() {
             }
         }).then(res=>{
             //check if successfully got token
-            if(res.data?.success){
+            if(res?.data?.success){
                 window.sessionStorage.setItem("token",res.data.token)
                 setToken(res.data?.success)
             }else{
@@ -61,7 +61,7 @@ function SignUp() {
                 <div>
                     <span>Email</span>
                     <form onSubmit={onLogin}>
-                        <input type="email" className="form-control"   aria-label="Email" onChange={e=>userChangeEmail(e)}/>
+                        <input type="email" className="form-control"   aria-label="Email" onChange={userChangeEmail}/>
                         <button type="submit" className="btn btn-primary"  disabled={isLogging}>Login</button>
                     </form>
                 </div>
