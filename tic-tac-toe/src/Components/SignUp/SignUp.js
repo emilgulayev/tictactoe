@@ -37,15 +37,14 @@ function SignUp() {
         }).then(res=>{
             //check if successfully got token
             if(res.data?.success){
-                setToken(res.data.token);
+                window.sessionStorage.setItem("token",res.data.token)
             }else{
                 alert("Sign up failed,please try again")
             }
-            setIsLogging(false)
         }).catch(error=>{
-            console.log("error",error)
-            setIsLogging(false)
             alert(error);
+        }).finally(()=>{
+            setIsLogging(false)
         });
     }
     return (
