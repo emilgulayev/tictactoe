@@ -1,4 +1,5 @@
 import React,{useState} from 'react'
+import {Redirect} from 'react-router-dom'
 import axios from 'axios'
 import ClipLoader from "react-spinners/ClipLoader"
 import { css } from "@emotion/react"
@@ -38,6 +39,7 @@ function SignUp() {
             //check if successfully got token
             if(res.data?.success){
                 window.sessionStorage.setItem("token",res.data.token)
+                setToken(res.data?.success)
             }else{
                 alert("Sign up failed,please try again")
             }
@@ -47,7 +49,11 @@ function SignUp() {
             setIsLogging(false)
         });
     }
-    return (
+
+    if(token!=''){
+        return <Redirect to="/game"></Redirect>
+    }
+    else return (
         <div className="SignUp">
             <h1>Sign Up</h1>
             <ClipLoader color={color} loading={isLogging} css={override} size={100} />
