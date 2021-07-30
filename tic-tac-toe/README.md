@@ -50,6 +50,8 @@ I found out that the way of checking is using the last move's row and col , and 
 
 Also, I thought the best way to implement the spinner/disable is to create a modal that lays over all other elements, with dark background and a spinner/message in case the game ended (and a reset button).
   
+ In the end I implemented the move suggestion, first i thought that minimax will solve everything, but run into a problem of not recognizing the saving move because minix max search in dfs and picks the first node that return +1 , finnaly I split the process in such that it first looks if there's a critical move and if not it digs inside with minimax.
+  
   Also I would have used macros in SASS to reduce double code.
   
   Also I would have made the UI more appealing.
