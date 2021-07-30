@@ -11,7 +11,7 @@ import GameSquare from './GameSquare/GameSquare'
 
 function Game() {
     const [validToken,setValidToken]=useState('')
-    const [board,setBoard]=useState([['','',''],['','',''],['','','']])
+    const [gameBoard,setGameBoard]=useState([['','',''],['','',''],['','','']])
     const [rowHovered,setRowHovered]=useState(-1)
     const [colHovered,setColHovered]=useState(-1)
     const [processing,setIsProcessing]=useState(true)
@@ -107,12 +107,12 @@ function Game() {
 
 
     const onPlayerMove=(row,col)=>{
-        if(board[row][col]!== '')
+        if(gameBoard[row][col]!== '')
             return
         setIsProcessing(true)
-        let newBoard=[...board];
+        let newBoard=[...gameBoard];
         newBoard[row][col]='X'
-        setBoard(newBoard)
+        setGameBoard(newBoard)
 
         console.log("is game ended?",checkIfEndGame(newBoard,{row,col}))
 
@@ -125,7 +125,7 @@ function Game() {
             method: 'post',
             url: 'https://d9u7x85vp9.execute-api.us-east-2.amazonaws.com/production/engine',
             data: {
-                board: board,
+                board: gameBoard,
             },
             headers:{
                 Authorization:`Bearer ${window.sessionStorage.getItem("token")}`
@@ -133,9 +133,9 @@ function Game() {
         }).then(res=>{
             console.log("AI res:",res)
             if(res?.data?.success){
-                let lastMove=findLastMove(board,res.data.board);
+                let lastMove=findLastMove(gameBoard,res.data.board);
                 console.log("AI last move",lastMove)
-                setBoard(res.data.board)
+                setGameBoard(res.data.board)
                 if(checkIfEndGame(res.data.board,lastMove)){
                     setGameEndStatus("AI Win!")
                 }
@@ -153,6 +153,11 @@ function Game() {
         setColHovered(col)
     }
 
+    const onResetGame =()=>{
+        setGameBoard([['','',''],['','',''],['','','']])
+        setGameEndStatus("")
+    }
+
     if(validToken==='') return <div className="Game-modal">Modal</div>
     if(!validToken) return <Redirect to="/signup"></Redirect>
     return (
@@ -160,7 +165,7 @@ function Game() {
             <h1>Game</h1>
             <button type="button" className="btn btn-success">Suggest a Move</button>
             <GameTable>
-                {board?.map((rowElement,rowIndex)=>{
+                {gameBoard?.map((rowElement,rowIndex)=>{
                     return (
                         <GameRow key={rowIndex}>
                             {rowElement?.map((colElement,colIndex)=>{
@@ -182,7 +187,10 @@ function Game() {
 
             {gameEndStatus!=="" && (
                 <div className="Game-modal">
-                    <div>{gameEndStatus}</div>
+                    <span>
+                        {gameEndStatus}
+                    </span>
+                    {gameEndStatus=="Draw!" && <button onClick={onResetGame} type="button" className="btn btn-primary btn-lg">Reset Game</button>}
                 </div>)}
         </div>
     )
