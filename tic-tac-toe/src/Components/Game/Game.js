@@ -42,31 +42,45 @@ function Game() {
         return true
     }
 
-    const checkEndGameByDiagonal=(board)=>{
+    const checkEndGameByDiagonal=(board,row,col)=>{
         let colNum=board[0].length
         let rowNum=board.length
-        let gameEnded=true
+
+        //center-square :check for two diagonals
+        if(col===colNum/2){
+            //check for diagonal left to right
+            for(let row=1;row<rowNum;row++){
+                if(board[row][row]!== board[row-1][row-1]){
+                    return false
+                }
+            }
+
+            for(let row=1;row<board.length;row++){
+                if(board[row][colNum- row-1] !== board[row -1][colNum - row]){
+                    return false
+                }
+            }
+
+            return true
+        }
         //check for diagonal left to right
-        for(let row=1;row<rowNum;row++){
-            if(board[row][row]!== board[row-1][row-1]){
-                gameEnded=false
-                break
+        else if(row===col){
+            for(let row=1;row<rowNum;row++){
+                if(board[row][row]!== board[row-1][row-1]){
+                    return false
+                }
             }
+            return true
         }
-
-        if(gameEnded && board[0][0]!=="") return true
-
         //check for diagonal right to left
-        if(board[rowNum-1][0]==="")
-            return false
-
-        for(let row=1;row<board.length;row++){
-            if(board[row][colNum- row-1] !== board[row -1][colNum - row]){
-                return false
+        else{
+            for(let row=1;row<board.length;row++){
+                if(board[row][colNum- row-1] !== board[row -1][colNum - row]){
+                    return false
+                }
             }
+            return true
         }
-
-        return true
     }
 
     const checkIfEndGame=(board,lastMove)=>{
@@ -77,7 +91,8 @@ function Game() {
         //didn't combine the if's because its very long condition
 
         //check if game ended by diagonal
-        if((lastMove.row===lastMove.col || lastMove.row + lastMove.col === board.length-1 ) && checkEndGameByDiagonal(board)){
+        if((lastMove.row===lastMove.col || lastMove.row + lastMove.col === board.length-1 ) &&
+            checkEndGameByDiagonal(board,lastMove.row,lastMove.col)){
             return true
         }
 
@@ -110,14 +125,12 @@ function Game() {
             let demyBoardX=copyArrayofArrays(board)
             demyBoardX[move.row][move.col]="X"
             if(checkIfEndGame(demyBoardX,move)){
-                debugger
                 return move
             }
             //copy board for O sign
             let demyBoardO=copyArrayofArrays(board)
             demyBoardO[move.row][move.col]="O"
             if(checkIfEndGame(demyBoardO,move)){
-                debugger
                 return move
             }
         }
@@ -155,8 +168,6 @@ function Game() {
             return 0
 
         let miniMaxResult
-        let savingMove
-        let bestMove
         //entered as player,  but now AI's moves checked
         if(move.isPlayer){
             for(let moveIndex=0;moveIndex<possibleMoves.length;moveIndex++){
@@ -195,18 +206,11 @@ function Game() {
         return neutralMove
     }
 
-    const copyArray=(arrToCpy)=>{
-        let newArr=[]
-        for(let elem of arrToCpy){
-            newArr.push(elem)
-        }
-        return newArr
-    }
-
+    //utility function for no reference between arrays
     const copyArrayofArrays =(arrToCpy)=>{
         let newArr=[]
         for(let elem of arrToCpy){
-            let newMiniArr=copyArray(elem)
+            let newMiniArr=elem.slice()
             newArr.push(newMiniArr)
         }
         return newArr
