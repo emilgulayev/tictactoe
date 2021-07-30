@@ -24,6 +24,8 @@ function Game() {
         setIsProcessing(false)
     },[])
 
+    //-------- check if game ended --------
+
     const checkEndGameByRow=(board,row)=>{
         for(let col=1;col<board[0].length;col++){
             if(board[row][col]!== board[row][col-1]){
@@ -98,6 +100,8 @@ function Game() {
 
         return false
     }
+
+    //-------------------------------------
 
     //the purpose of this func is to find AI row,col last move
     //return false if the arr's identical
@@ -189,6 +193,7 @@ function Game() {
         }
 
     }
+
     //minimax wrapper
     const miniMaxAux=(board)=>{
         let possibleMoves=findPossibleMoves(board,true)
@@ -212,6 +217,7 @@ function Game() {
         }
         return newArr
     }
+
     const onPlayerMove=(row,col)=>{
         if(gameBoard[row][col]!== '')
             return
