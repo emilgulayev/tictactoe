@@ -1,8 +1,8 @@
 import React,{useState} from 'react'
 import {Redirect} from 'react-router-dom'
 import axios from 'axios'
-import ClipLoader from "react-spinners/ClipLoader"
-import { css } from "@emotion/react"
+import Spinner from '../Spinner/Spinner'
+
 import './SignUp.sass'
 
 function SignUp() {
@@ -11,12 +11,6 @@ function SignUp() {
     const [isLogging,setIsLogging]=useState(false)
     const [token,setToken]=useState('')
     const [color, setColor] = useState("#ffffff")
-
-    const override = css`
-      display: block;
-      margin: 0 auto;
-      border-color: red;
-    `
 
     function userChangeEmail(e){
         setUserEmail(e.target.value)
@@ -67,7 +61,7 @@ function SignUp() {
 
             </div>
             {isLogging && <div className="SignUp-modal">
-                <ClipLoader color={color} loading={isLogging} css={override} size={100}/>
+                <Spinner color={color} loading={isLogging} size={100}></Spinner>
             </div>}
         </div>
     );

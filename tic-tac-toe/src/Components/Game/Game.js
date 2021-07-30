@@ -1,13 +1,13 @@
 import React,{useState,useEffect} from 'react'
 import {Redirect} from 'react-router-dom'
 import axios from 'axios'
-import ClipLoader from "react-spinners/ClipLoader"
-import { css } from "@emotion/react"
-import './Game.sass'
 
 import GameTable from './GameTable/GameTable'
 import GameRow from './GameRow/GameRow'
 import GameSquare from './GameSquare/GameSquare'
+import Spinner from '../Spinner/Spinner'
+
+import './Game.sass'
 
 function Game() {
     const [validToken,setValidToken]=useState('')
@@ -17,12 +17,6 @@ function Game() {
     const [processing,setIsProcessing]=useState(true)
     const [gameEndStatus,setGameEndStatus]=useState("")
     const [color, setColor] = useState("#ffffff")
-
-    const override = css`
-      display: block;
-      margin: 0 auto;
-      border-color: #ff0000;
-    `
 
     useEffect(()=>{
         if(!window.sessionStorage.getItem("token")){
@@ -156,7 +150,7 @@ function Game() {
     }
 
     if(validToken==='') return (
-        <div className="Game-modal"><ClipLoader color={color} loading={processing} css={override} size={100} /></div>
+        <div className="Game-modal"><Spinner color={color} loading={processing}  size={100} /></div>
     )
     if(!validToken) return <Redirect to="/signup"></Redirect>
     return (
@@ -181,7 +175,7 @@ function Game() {
 
             {processing && (
                 <div className="Game-modal">
-                    <ClipLoader color={color} loading={processing} css={override} size={100} />
+                    <Spinner color={color} loading={processing} size={100} />
                 </div>)}
 
             {gameEndStatus!=="" && (
