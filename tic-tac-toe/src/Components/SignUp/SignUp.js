@@ -50,7 +50,7 @@ function SignUp() {
         })
     }
 
-    if(token!=''){
+    if(token!==''){
         return <Redirect to="/game"></Redirect>
     }
     else return (

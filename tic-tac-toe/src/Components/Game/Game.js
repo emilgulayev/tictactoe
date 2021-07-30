@@ -1,6 +1,8 @@
 import React,{useState,useEffect} from 'react'
 import {Redirect} from 'react-router-dom'
 import axios from 'axios'
+import ClipLoader from "react-spinners/ClipLoader"
+import { css } from "@emotion/react"
 import './Game.sass'
 
 import GameTable from './GameTable/GameTable'
@@ -12,16 +14,34 @@ function Game() {
     const [board,setBoard]=useState([['','',''],['','',''],['','','']])
     const [rowHovered,setRowHovered]=useState(-1)
     const [colHovered,setColHovered]=useState(-1)
+    const [processing,setIsProcessing]=useState(true)
+    const [color, setColor] = useState("#ffffff")
+
+    const override = css`
+      display: block;
+      margin: 0 auto;
+      border-color: red;
+    `
 
     useEffect(()=>{
         if(!window.sessionStorage.getItem("token")){
             setValidToken(false)
         }
-        else setValidToken(true)
+        else{
+            setValidToken(true)
+            setIsProcessing(false)
+        }
     },[])
+
+    const checkIfEndGame=()=>{
+
+    }
 
 
     const onPlayerMove=(row,col)=>{
+        if(board[row][col]!== '')
+            return
+        setIsProcessing(true)
         setBoard(prevState=>{
             let newBoard=[...prevState];
             newBoard[row][col]='X'
@@ -35,12 +55,13 @@ function Game() {
                 board: board,
             },
             headers:{
-                Authorization:`Bearer ${window.sessionStorage.getItem("token")} +`
+                Authorization:`Bearer ${window.sessionStorage.getItem("token")}`
             }
         }).then(res=>{
             console.log("AI res:",res)
             if(res?.data?.success){
                 setBoard(res.data.board)
+                setIsProcessing(false)
             }
         }).catch(error=>{
             setValidToken(false)
@@ -51,8 +72,7 @@ function Game() {
         setRowHovered(row)
         setColHovered(col)
     }
-
-    if(validToken==='') return <div>Redirecting...</div>
+    if(validToken==='') return <div className="Game-modal">Modal</div>
     if(!validToken) return <Redirect to="/signup"></Redirect>
     return (
         <div className="Game">
@@ -73,6 +93,9 @@ function Game() {
                     )
                 })}
             </GameTable>
+            {processing && <div className="Game-modal">
+                <ClipLoader color={color} loading={processing} css={override} size={100} />
+            </div>}
         </div>
     )
 }
