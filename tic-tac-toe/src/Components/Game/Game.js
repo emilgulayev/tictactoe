@@ -175,15 +175,17 @@ function Game() {
                 })}
             </GameTable>
 
-            {processing && <div className="Game-modal">
-                <ClipLoader color={color} loading={processing} css={override} size={100} />
-            </div>}
+            {processing && (
+                <div className="Game-modal">
+                    <ClipLoader color={color} loading={processing} css={override} size={100} />
+                </div>)}
 
-            {gameEndStatus!=="" && <div className="Game-modal">
-                <div>{gameEndStatus}</div>
-            </div>}
+            {gameEndStatus!=="" && (
+                <div className="Game-modal">
+                    <div>{gameEndStatus}</div>
+                </div>)}
         </div>
     )
-}
+};
 
 export default Game
