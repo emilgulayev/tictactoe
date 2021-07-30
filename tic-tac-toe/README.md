@@ -30,9 +30,9 @@ First technical issue I've tackled was hovering on a certain cell(and then row a
 First I tried to find a simple solution with css , but after a while I understood that I have to use state (as the row and col of the hovered cell).
 Then I Thought of Creating a component for each part of the game board :
 
--Game Table
--Game Row
--Game Square
+- Game Table
+- Game Row
+- Game Square
 
 Using this kind of organization , was on one hand more understandable for other devs , but there was a trade off in such that I needed to pass to the components certain function on props that I wouldn't have if I used <div> directly and not component containers.(and thus there are more renders)
   
