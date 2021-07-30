@@ -10,7 +10,8 @@ function SignUp() {
     const [userEmail,setUserEmail]= useState("")
     const [isLogging,setIsLogging]=useState(false)
     const [token,setToken]=useState('')
-    const [color, setColor] = useState("#ffffff")
+    const [spinnerColor, setColor] = useState("#ffffff")
+
 
     //check if already have a token in session
     useEffect(()=>{
@@ -68,7 +69,7 @@ function SignUp() {
 
             </div>
             {isLogging && <div className="SignUp-modal">
-                <Spinner color={color} loading={isLogging} size={100}></Spinner>
+                <Spinner color={spinnerColor} loading={isLogging} size={100}></Spinner>
             </div>}
         </div>
     );

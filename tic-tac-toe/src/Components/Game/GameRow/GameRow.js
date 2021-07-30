@@ -3,7 +3,7 @@ import './GameRow.sass'
 
 export default function GameRow({children}){
     return (
-        <div className="game-row">
+        <div className="Game-row">
             {children}
         </div>
     )

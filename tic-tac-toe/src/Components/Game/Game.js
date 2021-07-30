@@ -16,16 +16,12 @@ function Game() {
     const [colHovered,setColHovered]=useState(-1)
     const [processing,setIsProcessing]=useState(true)
     const [gameEndStatus,setGameEndStatus]=useState("")
-    const [color, setColor] = useState("#ffffff")
+    const [spinnerColor, setColor] = useState("#ffffff")
+    const [spinnerSize,setSpinnerSize]=useState(100)
 
     useEffect(()=>{
-        if(!window.sessionStorage.getItem("token")){
-            setValidToken(false)
-        }
-        else{
-            setValidToken(true)
-            setIsProcessing(false)
-        }
+        setValidToken(window.sessionStorage.getItem("token")?true:false)
+        setIsProcessing(false)
     },[])
 
     const checkEndGameByRow=(board,row)=>{
@@ -78,10 +74,13 @@ function Game() {
         if(checkEndGameByRow(board,lastMove.row) || checkEndGameByCol(board,lastMove.col)){
             return true
         }
+        //didn't combine the if's because its very long condition
+        
         //check if game ended by diagonal
         if((lastMove.row===lastMove.col || lastMove.row + lastMove.col === board.length-1 ) && checkEndGameByDiagonal(board)){
             return true
         }
+
         return false
     }
 
@@ -150,7 +149,7 @@ function Game() {
     }
 
     if(validToken==='') return (
-        <div className="Game-modal"><Spinner color={color} loading={processing}  size={100} /></div>
+        <div className="Game-modal"><Spinner color={spinnerColor} loading={processing}  size={spinnerSize} /></div>
     )
     if(!validToken) return <Redirect to="/signup"></Redirect>
     return (
@@ -175,7 +174,7 @@ function Game() {
 
             {processing && (
                 <div className="Game-modal">
-                    <Spinner color={color} loading={processing} size={100} />
+                    <Spinner color={spinnerColor} loading={processing} size={spinnerSize} />
                 </div>)}
 
             {gameEndStatus!=="" && (
