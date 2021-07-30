@@ -1,7 +1,8 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
+import {Redirect} from 'react-router-dom'
 import axios from 'axios'
-import ClipLoader from "react-spinners/ClipLoader"
-import { css } from "@emotion/react"
+import Spinner from '../Spinner/Spinner'
+
 import './SignUp.sass'
 
 function SignUp() {
@@ -11,11 +12,12 @@ function SignUp() {
     const [token,setToken]=useState('')
     const [color, setColor] = useState("#ffffff")
 
-    const override = css`
-      display: block;
-      margin: 0 auto;
-      border-color: red;
-    `
+    //check if already have a token in session
+    useEffect(()=>{
+        if(window.sessionStorage.getItem("token")){
+            setToken(window.sessionStorage.getItem("token"))
+        }
+    },[])
 
     function userChangeEmail(e){
         setUserEmail(e.target.value)
@@ -24,7 +26,7 @@ function SignUp() {
     function onLogin(e){
         e.preventDefault()
         if(userEmail===''){
-            alert("Email field is empty, please fill it");
+            alert("Email field is empty, please fill it")
             return
         }
         setIsLogging(true);
@@ -36,33 +38,40 @@ function SignUp() {
             }
         }).then(res=>{
             //check if successfully got token
-            if(res.data?.success){
+            if(res?.data?.success){
                 window.sessionStorage.setItem("token",res.data.token)
+                setToken(res.data?.success)
             }else{
                 alert("Sign up failed,please try again")
             }
         }).catch(error=>{
-            alert(error);
+            alert(error)
         }).finally(()=>{
             setIsLogging(false)
-        });
+        })
     }
-    return (
+
+    if(token!==''){
+        return <Redirect to="/game"></Redirect>
+    }
+    else return (
         <div className="SignUp">
             <h1>Sign Up</h1>
-            <ClipLoader color={color} loading={isLogging} css={override} size={100} />
             <div className="SignUp-container">
                 <div>
                     <span>Email</span>
                     <form onSubmit={onLogin}>
-                        <input type="email" className="form-control"   aria-label="Email" onChange={e=>userChangeEmail(e)}/>
+                        <input type="email" className="form-control"   aria-label="Email" onChange={userChangeEmail}/>
                         <button type="submit" className="btn btn-primary"  disabled={isLogging}>Login</button>
                     </form>
                 </div>
 
             </div>
+            {isLogging && <div className="SignUp-modal">
+                <Spinner color={color} loading={isLogging} size={100}></Spinner>
+            </div>}
         </div>
     );
 }
 
-export default SignUp;
+export default SignUp

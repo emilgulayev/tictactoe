@@ -1,30 +1,26 @@
-import React,{useState,useEffect} from 'react'
+import React from 'react'
 import {
     Route,
     Switch,
     BrowserRouter,
+    Redirect,
 } from 'react-router-dom'
 
 import SignUp from './Components/SignUp/SignUp'
-
-function requireAuth(nextState, replace, next) {
-    if (!window.sessionStorage.getItem("token")) {
-        replace({
-            pathname: "/signup",
-            state: {nextPathname: nextState.location.pathname}
-        });
-    }
-    next();
-}
+import Game from './Components/Game/Game'
 
 function App() {
-    const [token,setToken] = useState("")
 
   return (
     <div className="App">
         <BrowserRouter>
             <Switch>
-                <Route path="/" component={SignUp} onEnter={requireAuth}></Route>
+                <Route path="/" exact render={()=>(
+                    window.sessionStorage.getItem("token")? (<Redirect to="/game"/>) :
+                        (<Redirect to="/signup"/>)
+                )}></Route>
+                <Route path="/signup" component={SignUp} ></Route>
+                <Route path="/game" component={Game} ></Route>
             </Switch>
         </BrowserRouter>
     </div>
