@@ -38,9 +38,9 @@ Using this kind of organization , was on one hand more understandable for other 
   
 Specificaly the functions are :
  
-1.isHighlighted
-2.onSquareHover
-3.onPlayerMove
+1. isHighlighted
+2. onSquareHover
+3. onPlayerMove
   
 Moving on the next issue I've tackled was how I check if there is a win, and how to find AI's last move.
 So I've implemented a function that finds the first diff between arrays(and in our case the only diff) : **findLastMove** .
