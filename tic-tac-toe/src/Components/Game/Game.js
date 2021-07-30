@@ -75,7 +75,7 @@ function Game() {
             return true
         }
         //didn't combine the if's because its very long condition
-        
+
         //check if game ended by diagonal
         if((lastMove.row===lastMove.col || lastMove.row + lastMove.col === board.length-1 ) && checkEndGameByDiagonal(board)){
             return true
@@ -98,7 +98,119 @@ function Game() {
         return false
     }
 
+    const findWinningMove =(board)=>{
 
+        let possibleMoves=findPossibleMoves(board,true);
+        //only one move left
+        if(possibleMoves.length==1)
+            return possibleMoves[0]
+
+        for(let move of possibleMoves){
+            //copy board for X sign
+            let demyBoardX=copyArrayofArrays(board)
+            demyBoardX[move.row][move.col]="X"
+            if(checkIfEndGame(demyBoardX,move)){
+                debugger
+                return move
+            }
+            //copy board for O sign
+            let demyBoardO=copyArrayofArrays(board)
+            demyBoardO[move.row][move.col]="O"
+            if(checkIfEndGame(demyBoardO,move)){
+                debugger
+                return move
+            }
+        }
+        return false
+
+    }
+
+    const findPossibleMoves =(board,isPlayer)=>{
+        let possibleMoves=[]
+
+        for(let rowNum=0;rowNum<board.length;rowNum++){
+            for(let colNum=0;colNum<board[0].length; colNum++){
+                if(board[rowNum][colNum]==='')
+                    possibleMoves.push({row:rowNum,col:colNum,isPlayer:isPlayer,sign:isPlayer?"X":"O"})
+            }
+        }
+        return possibleMoves;
+    }
+
+    const miniMax =(board,move)=>{
+        let newBoard=[...board]
+
+        newBoard[move.row][move.col]=move.sign
+
+        if(checkIfEndGame(newBoard,move)){
+            if(move.isPlayer)
+                return 1
+            else
+                return -1
+        }
+
+        let possibleMoves=findPossibleMoves(newBoard,!move.isPlayer)
+
+        if(possibleMoves.length==0)
+            return 0
+
+        let miniMaxResult
+        let savingMove
+        let bestMove
+        //entered as player,  but now AI's moves checked
+        if(move.isPlayer){
+            for(let moveIndex=0;moveIndex<possibleMoves.length;moveIndex++){
+                miniMaxResult=miniMax(newBoard,possibleMoves[moveIndex])
+                if(miniMaxResult==-1)
+                    return  -1
+             }
+
+            return 0
+        }
+        //entered as AI , but now Player's moves checked
+        else{
+            for(let moveIndex=0;moveIndex<possibleMoves.length;moveIndex++){
+                miniMaxResult=miniMax(newBoard,possibleMoves[moveIndex])
+                if(miniMaxResult==1)
+                    return 1
+            }
+            return 0
+        }
+
+    }
+    //minimax wrapper
+    const miniMaxAux=(board)=>{
+        let copyBoard=board.slice()
+        let possibleMoves=findPossibleMoves(copyBoard,true)
+        let neutralMove
+        for(let moveIndex=0;moveIndex<possibleMoves.length;moveIndex++){
+            let miniMaxResult=miniMax(copyBoard,possibleMoves[moveIndex])
+            if(miniMaxResult===5)
+                return possibleMoves[moveIndex]
+            if(miniMaxResult===1)
+                return possibleMoves[moveIndex]
+            else if(miniMaxResult===0)
+                neutralMove=possibleMoves[moveIndex]
+        }
+        return neutralMove
+    }
+
+    const copyArray=(arrToCpy)=>{
+        let newArr=[]
+        for(let elem of arrToCpy){
+            newArr.push(elem)
+        }
+        return newArr
+    }
+
+    const copyArrayofArrays =(arrToCpy)=>{
+        let newArr=[]
+        for(let elem of arrToCpy){
+            let newMiniArr=copyArray(elem)
+            newArr.push(newMiniArr)
+        }
+        return newArr
+    }
     const onPlayerMove=(row,col)=>{
         if(gameBoard[row][col]!== '')
             return
@@ -143,6 +255,19 @@ function Game() {
         setColHovered(col)
     }
 
+    const onSuggestMove=()=>{
+        let copyBoard1=copyArrayofArrays(gameBoard)
+        let copyBoard2=copyArrayofArrays(gameBoard)
+        let winningMove=findWinningMove(copyBoard1)
+
+        if(winningMove){
+            onPlayerMove(winningMove.row,winningMove.col)
+        }else{
+            let nextMove=miniMaxAux(copyBoard2);
+            onPlayerMove(nextMove.row,nextMove.col)
+        }
+    }
+
     const onResetGame =()=>{
         setGameBoard([['','',''],['','',''],['','','']])
         setGameEndStatus("")
@@ -155,6 +280,7 @@ function Game() {
     return (
         <div className="Game">
             <h1>Game</h1>
+            <button onClick={onSuggestMove} type="button" className="btn btn-success">Suggest a Move</button>
             <GameTable>
                 {gameBoard?.map((rowElement,rowIndex)=>{
                     return (
