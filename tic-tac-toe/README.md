@@ -19,6 +19,11 @@ You will also see any lint errors in the console.
 
 I've decided to use **Bootstrap** as my design library, and also used Spinner package which I found in npm.
 
+I've used React router and conditional render for the "/" path, checking that there is a token.
+
+
+I've implemented the game as a general 2 dimentions matrix (not 3X3)
+
 I tried to use Components as much as needed, and for each components there is a sass file.
 
 First technical issue I've tackled was hovering on a certain cell(and then row and colum highlighted).
@@ -45,6 +50,15 @@ I found out that the way of checking is using the last move's row and col , and 
 
 Also, I thought the best way to implement the spinner/disable is to create a modal that lays over all other elements, with dark background and a spinner/message in case the game ended (and a reset button).
   
+  
 I started to work on **Suggest a Move** button , first I thought that I can maneuver the AI API , I tried to test the API so that I can use it for implementing this feature,
   but understood that it only sends back a move if the board missing a move of "O", and in conclusion didn't find a way to utilize it for this.
+  
+If I had more time I've thought of an algorithm that suggests a move base on the current board.
+  Also I would have used macros in SASS to reduce double code.
+  
+  Also in the end I realized that I coul've reduce the code in the check of diagonal end game, to choose which diagonal I check by and not always going through both of them.
+  
+  Also I would have mad the UI more appealing.
+  
   
