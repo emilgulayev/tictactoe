@@ -3,7 +3,7 @@ import './GameTable.sass'
 
 export default function GameTable({children}){
     return (
-        <div className="game-table">
+        <div className="Game-table">
             {children}
         </div>
     )
