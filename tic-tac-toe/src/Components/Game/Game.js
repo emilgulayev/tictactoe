@@ -10,7 +10,7 @@ import GameSquare from './GameSquare/GameSquare'
 function Game() {
 
     const [validToken,setValidToken]=useState('')
-    const [board,setBoard]=useState([['0','0','0'],['0','0','0'],['0','0','0']])
+    const [board,setBoard]=useState([[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']])
     const [rowHovered,setRowHovered]=useState(-1)
     const [colHovered,setColHovered]=useState(-1)
 
@@ -20,8 +20,12 @@ function Game() {
     },[])
 
 
-    const onPlayerMove=()=>{
-
+    const onPlayerMove=(row,col)=>{
+        setBoard(prevState=>{
+            let newBoard=[...prevState];
+            newBoard[row][col]='X'
+            setBoard(newBoard)
+        })
     }
 
     const onSquareHover=(row,col)=>{
@@ -35,13 +39,14 @@ function Game() {
         <div className="Game">
             <h1>Game</h1>
             <GameTable>
-                {board.map((rowElement,rowIndex)=>{
+                {board?.map((rowElement,rowIndex)=>{
                     return (
-                        <GameRow>
-                            {rowElement.map((colElement,colIndex)=>{
+                        <GameRow key={rowIndex}>
+                            {rowElement?.map((colElement,colIndex)=>{
                                 return(
-                                    <GameSquare value={colElement} row={rowIndex} col={colIndex}
-                                                isHighlighted={rowIndex===rowHovered || colIndex===colHovered} onSquareHover={onSquareHover.bind(this)}/>
+                                    <GameSquare key={rowIndex + ',' + colIndex} value={colElement} row={rowIndex} col={colIndex}
+                                                isHighlighted={rowIndex===rowHovered || colIndex===colHovered} onSquareHover={onSquareHover.bind(this)}
+                                                    onPlayerMove={onPlayerMove.bind(this)}/>
                                 )
                             })}
                         </GameRow>

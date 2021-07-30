@@ -1,7 +1,15 @@
 .game-square
+  width: 12.5vw
+  height: 12.5vw
+  display: flex
+  justify-content: center
+  align-items: center
+  font-size: 4vw
   &.highlighted
     background-color: green
     color: white
   &:hover
     background-color: red
+.game-square + .game-square
+  border-left: 1px solid black
 
