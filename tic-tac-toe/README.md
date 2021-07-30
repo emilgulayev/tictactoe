@@ -59,6 +59,6 @@ If I had more time I've thought of an algorithm that suggests a move base on the
   
   Also in the end I realized that I coul've reduce the code in the check of diagonal end game, to choose which diagonal I check by and not always going through both of them.
   
-  Also I would have mad the UI more appealing.
+  Also I would have madק the UI more appealing.
   
   
