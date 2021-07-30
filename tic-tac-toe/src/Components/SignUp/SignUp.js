@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import {Redirect} from 'react-router-dom'
 import axios from 'axios'
 import Spinner from '../Spinner/Spinner'
@@ -11,6 +11,13 @@ function SignUp() {
     const [isLogging,setIsLogging]=useState(false)
     const [token,setToken]=useState('')
     const [color, setColor] = useState("#ffffff")
+
+    //check if already have a token in session
+    useEffect(()=>{
+        if(window.sessionStorage.getItem("token")){
+            setToken(window.sessionStorage.getItem("token"))
+        }
+    },[])
 
     function userChangeEmail(e){
         setUserEmail(e.target.value)
