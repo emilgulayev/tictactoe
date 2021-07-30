@@ -20,13 +20,8 @@ function Game() {
     const [spinnerSize,setSpinnerSize]=useState(100)
 
     useEffect(()=>{
-        if(!window.sessionStorage.getItem("token")){
-            setValidToken(false)
-        }
-        else{
-            setValidToken(true)
-            setIsProcessing(false)
-        }
+        setValidToken(window.sessionStorage.getItem("token")?true:false)
+        setIsProcessing(false)
     },[])
 
     const checkEndGameByRow=(board,row)=>{
@@ -79,10 +74,13 @@ function Game() {
         if(checkEndGameByRow(board,lastMove.row) || checkEndGameByCol(board,lastMove.col)){
             return true
         }
+        //didn't combine the if's because its very long condition
+        
         //check if game ended by diagonal
         if((lastMove.row===lastMove.col || lastMove.row + lastMove.col === board.length-1 ) && checkEndGameByDiagonal(board)){
             return true
         }
+
         return false
     }
 
