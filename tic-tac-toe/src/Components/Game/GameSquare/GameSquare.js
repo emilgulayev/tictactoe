@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React from 'react'
 import './GameSquare.sass'
 
 export default function GameSquare({row,col,value,isHighlighted,onSquareHover,onPlayerMove}){

@@ -85,7 +85,7 @@ function Game() {
             return true
         }
         //check if game ended by diagonal
-        if((lastMove.row==lastMove.col || lastMove.row + lastMove.col == board.length-1 ) && checkEndGameByDiagonal(board)){
+        if((lastMove.row===lastMove.col || lastMove.row + lastMove.col === board.length-1 ) && checkEndGameByDiagonal(board)){
             return true
         }
         return false
@@ -114,10 +114,9 @@ function Game() {
         newBoard[row][col]='X'
         setGameBoard(newBoard)
 
-        console.log("is game ended?",checkIfEndGame(newBoard,{row,col}))
-
         if(checkIfEndGame(newBoard,{row,col})){
             setGameEndStatus("You Win!")
+            setIsProcessing(false)
             return
         }
 
@@ -131,10 +130,8 @@ function Game() {
                 Authorization:`Bearer ${window.sessionStorage.getItem("token")}`
             }
         }).then(res=>{
-            console.log("AI res:",res)
             if(res?.data?.success){
                 let lastMove=findLastMove(gameBoard,res.data.board);
-                console.log("AI last move",lastMove)
                 setGameBoard(res.data.board)
                 if(checkIfEndGame(res.data.board,lastMove)){
                     setGameEndStatus("AI Win!")
@@ -158,21 +155,23 @@ function Game() {
         setGameEndStatus("")
     }
 
-    if(validToken==='') return <div className="Game-modal">Modal</div>
+    if(validToken==='') return (
+        <div className="Game-modal"><ClipLoader color={color} loading={processing} css={override} size={100} /></div>
+    )
     if(!validToken) return <Redirect to="/signup"></Redirect>
     return (
         <div className="Game">
             <h1>Game</h1>
-            <button type="button" className="btn btn-success">Suggest a Move</button>
             <GameTable>
                 {gameBoard?.map((rowElement,rowIndex)=>{
                     return (
                         <GameRow key={rowIndex}>
                             {rowElement?.map((colElement,colIndex)=>{
                                 return(
-                                    <GameSquare key={rowIndex + ',' + colIndex} value={colElement} row={rowIndex} col={colIndex}
-                                                isHighlighted={rowIndex===rowHovered || colIndex===colHovered} onSquareHover={onSquareHover}
-                                                    onPlayerMove={onPlayerMove}/>
+                                    <GameSquare key={rowIndex + ',' + colIndex} value={colElement}
+                                                row={rowIndex} col={colIndex}
+                                                isHighlighted={rowIndex===rowHovered || colIndex===colHovered}
+                                                onSquareHover={onSquareHover} onPlayerMove={onPlayerMove}/>
                                 )
                             })}
                         </GameRow>
@@ -190,7 +189,7 @@ function Game() {
                     <span>
                         {gameEndStatus}
                     </span>
-                    {gameEndStatus=="Draw!" && <button onClick={onResetGame} type="button" className="btn btn-primary btn-lg">Reset Game</button>}
+                     <button onClick={onResetGame} type="button" className="btn btn-primary btn-lg">Reset Game</button>
                 </div>)}
         </div>
     )

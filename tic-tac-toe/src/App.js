@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React from 'react'
 import {
     Route,
     Switch,
@@ -9,24 +9,7 @@ import {
 import SignUp from './Components/SignUp/SignUp'
 import Game from './Components/Game/Game'
 
-function requireAuth(nextState, replace, next) {
-    console.log("token",window.sessionStorage.getItem("token"))
-    if (!window.sessionStorage.getItem("token")) {
-        replace({
-            pathname: "/signup",
-            state: {nextPathname: nextState.location.pathname}
-        });
-    }else{
-        replace({
-            pathname: "/game",
-            state: {nextPathname: nextState.location.pathname}
-        });
-    }
-    next();
-}
-
 function App() {
-    const [token,setToken] = useState("")
 
   return (
     <div className="App">

@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React from 'react'
 import './GameRow.sass'
 
 export default function GameRow({children}){

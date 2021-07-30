@@ -56,7 +56,6 @@ function SignUp() {
     else return (
         <div className="SignUp">
             <h1>Sign Up</h1>
-            <ClipLoader color={color} loading={isLogging} css={override} size={100} />
             <div className="SignUp-container">
                 <div>
                     <span>Email</span>
@@ -67,6 +66,9 @@ function SignUp() {
                 </div>
 
             </div>
+            {isLogging && <div className="SignUp-modal">
+                <ClipLoader color={color} loading={isLogging} css={override} size={100}/>
+            </div>}
         </div>
     );
 }
