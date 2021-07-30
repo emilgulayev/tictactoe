@@ -25,7 +25,7 @@ function SignUp() {
     function onLogin(e){
         e.preventDefault()
         if(userEmail===''){
-            alert("Email field is empty, please fill it");
+            alert("Email field is empty, please fill it")
             return
         }
         setIsLogging(true);
@@ -44,10 +44,10 @@ function SignUp() {
                 alert("Sign up failed,please try again")
             }
         }).catch(error=>{
-            alert(error);
+            alert(error)
         }).finally(()=>{
             setIsLogging(false)
-        });
+        })
     }
 
     if(token!=''){
