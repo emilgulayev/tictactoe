@@ -191,13 +191,10 @@ function Game() {
     }
     //minimax wrapper
     const miniMaxAux=(board)=>{
-        let copyBoard=board.slice()
-        let possibleMoves=findPossibleMoves(copyBoard,true)
+        let possibleMoves=findPossibleMoves(board,true)
         let neutralMove
         for(let moveIndex=0;moveIndex<possibleMoves.length;moveIndex++){
-            let miniMaxResult=miniMax(copyBoard,possibleMoves[moveIndex])
-            if(miniMaxResult===5)
-                return possibleMoves[moveIndex]
+            let miniMaxResult=miniMax(board,possibleMoves[moveIndex])
             if(miniMaxResult===1)
                 return possibleMoves[moveIndex]
             else if(miniMaxResult===0)
@@ -260,14 +257,14 @@ function Game() {
     }
 
     const onSuggestMove=()=>{
-        let copyBoard1=copyArrayofArrays(gameBoard)
-        let copyBoard2=copyArrayofArrays(gameBoard)
-        let winningMove=findWinningMove(copyBoard1)
+        let copyBoardForWinningMove=copyArrayofArrays(gameBoard)
+        let copyBoardForMiniMax=copyArrayofArrays(gameBoard)
+        let winningMove=findWinningMove(copyBoardForWinningMove)
 
         if(winningMove){
             onPlayerMove(winningMove.row,winningMove.col)
         }else{
-            let nextMove=miniMaxAux(copyBoard2);
+            let nextMove=miniMaxAux(copyBoardForMiniMax);
             onPlayerMove(nextMove.row,nextMove.col)
         }
     }
